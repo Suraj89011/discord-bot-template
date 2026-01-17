@@ -1,0 +1,22 @@
+{
+  "name": "@{{APP_NAME}}/api-service",
+  "version": "1.0.0",
+  "description": "{{APP_TITLE}} API Service",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "nodemon src/index.js",
+    "lint": "eslint src/"
+  },
+  "dependencies": {
+    "@{{APP_NAME}}/commons": "file:../commons",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "helmet": "^8.1.0",
+    "express-rate-limit": "^7.6.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.9"
+  }
+}
