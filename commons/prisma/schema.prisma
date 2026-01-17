@@ -1,0 +1,150 @@
+// Prisma schema for {{APP_TITLE}}
+// https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// Optional: Field-level encryption
+// Uncomment to enable encrypted fields
+// generator fieldEncryptionMigrations {
+//   provider = "prisma-field-encryption"
+//   output   = "./migrations"
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ============================================================================
+// User Model
+// ============================================================================
+model User {
+  id            String   @id @default(cuid())
+  discordId     String   @unique @map("discord_id")
+  username      String
+  discriminator String?  @default("0")
+  avatar        String?
+  email         String?  // @encrypted (uncomment generator above to enable)
+  isAdmin       Boolean  @default(false) @map("is_admin")
+  createdAt     DateTime @default(now()) @map("created_at")
+  updatedAt     DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  servers       ServerMember[]
+  commandUsages CommandUsage[]
+
+  @@map("users")
+}
+
+// ============================================================================
+// Server Model
+// ============================================================================
+model Server {
+  id          String   @id @default(cuid())
+  discordId   String   @unique @map("discord_id")
+  name        String
+  icon        String?
+  memberCount Int      @default(0) @map("member_count")
+  ownerId     String?  @map("owner_id")
+  isActive    Boolean  @default(true) @map("is_active")
+  isPremium   Boolean  @default(false) @map("is_premium")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  settings      ServerSettings?
+  members       ServerMember[]
+  commandUsages CommandUsage[]
+
+  @@map("servers")
+}
+
+// ============================================================================
+// Server Settings Model
+// ============================================================================
+model ServerSettings {
+  id               String   @id @default(cuid())
+  serverId         String   @unique @map("server_id")
+  prefix           String   @default("!")
+  language         String   @default("en")
+  timezone         String   @default("UTC")
+
+  // Channel settings
+  logChannelId     String?  @map("log_channel_id")
+  welcomeChannelId String?  @map("welcome_channel_id")
+  welcomeMessage   String?  @map("welcome_message")
+
+  // Feature toggles
+  enableLeveling   Boolean  @default(true) @map("enable_leveling")
+  enableWelcome    Boolean  @default(false) @map("enable_welcome")
+  enableLogging    Boolean  @default(false) @map("enable_logging")
+
+  createdAt        DateTime @default(now()) @map("created_at")
+  updatedAt        DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  server           Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@map("server_settings")
+}
+
+// ============================================================================
+// Server Member (Junction table for User-Server relationship)
+// ============================================================================
+model ServerMember {
+  id        String   @id @default(cuid())
+  userId    String   @map("user_id")
+  serverId  String   @map("server_id")
+  nickname  String?
+  xp        Int      @default(0)
+  level     Int      @default(0)
+  messages  Int      @default(0)
+  joinedAt  DateTime @default(now()) @map("joined_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  server    Server   @relation(fields: [serverId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, serverId])
+  @@map("server_members")
+}
+
+// ============================================================================
+// Command Usage (Analytics)
+// ============================================================================
+model CommandUsage {
+  id          String   @id @default(cuid())
+  commandName String   @map("command_name")
+  userId      String?  @map("user_id")
+  serverId    String?  @map("server_id")
+  channelId   String?  @map("channel_id")
+  success     Boolean  @default(true)
+  errorMessage String? @map("error_message")
+  executionTime Int?   @map("execution_time") // in milliseconds
+  usedAt      DateTime @default(now()) @map("used_at")
+
+  // Relations
+  user        User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  server      Server?  @relation(fields: [serverId], references: [id], onDelete: SetNull)
+
+  @@index([commandName])
+  @@index([usedAt])
+  @@index([serverId])
+  @@map("command_usage")
+}
+
+// ============================================================================
+// App Settings (Global configuration)
+// ============================================================================
+model AppSetting {
+  id        String   @id @default(cuid())
+  key       String   @unique
+  value     String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("app_settings")
+}
