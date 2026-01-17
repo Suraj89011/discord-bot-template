@@ -1,0 +1,43 @@
+# ============================================================================
+# Base image with commons library
+# Used as the foundation for bot and api-service
+# ============================================================================
+
+# Stage 1: Dependencies
+FROM node:20-alpine AS deps
+WORKDIR /app
+
+# Install build dependencies
+RUN apk add --no-cache libc6-compat python3 make g++
+
+# Copy package files
+COPY package*.json ./
+COPY commons/package*.json ./commons/
+
+# Install dependencies
+RUN npm ci --only=production && npm cache clean --force
+
+# Copy commons source and generate Prisma client
+COPY commons/ ./commons/
+RUN cd commons && npx prisma generate
+
+# ============================================================================
+# Final base image
+# ============================================================================
+FROM node:20-alpine AS base
+WORKDIR /app
+
+# Add non-root user for security
+RUN addgroup --system --gid 1001 nodejs && \
+    adduser --system --uid 1001 appuser
+
+# Copy node_modules with Prisma client
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/commons ./commons
+
+# Set ownership
+RUN chown -R appuser:nodejs /app
+
+USER appuser
+
+ENV NODE_ENV=production
