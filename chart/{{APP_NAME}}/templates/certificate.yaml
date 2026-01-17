@@ -1,0 +1,17 @@
+{{- if .Values.gateway.enabled -}}
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: {{ include "app.fullname" . }}-tls
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  secretName: {{ include "app.fullname" . }}-tls
+  issuerRef:
+    name: {{ .Values.gateway.clusterIssuer }}
+    kind: ClusterIssuer
+  dnsNames:
+    - {{ .Values.dashboard.hostname | quote }}
+  duration: 2160h # 90 days
+  renewBefore: 360h # 15 days
+{{- end }}

@@ -1,0 +1,88 @@
+{{- if .Values.gateway.enabled -}}
+apiVersion: gateway.networking.k8s.io/v1
+kind: Gateway
+metadata:
+  name: {{ include "app.fullname" . }}
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.gateway.clusterIssuer | quote }}
+    {{- if .Values.gateway.externalDns.enabled }}
+    external-dns.alpha.kubernetes.io/hostname: {{ .Values.dashboard.hostname | quote }}
+    {{- end }}
+spec:
+  gatewayClassName: {{ .Values.gateway.className }}
+  listeners:
+    - name: https
+      protocol: HTTPS
+      port: 443
+      hostname: {{ .Values.dashboard.hostname | quote }}
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - name: {{ include "app.fullname" . }}-tls
+            kind: Secret
+      allowedRoutes:
+        namespaces:
+          from: Same
+    - name: http
+      protocol: HTTP
+      port: 80
+      hostname: {{ .Values.dashboard.hostname | quote }}
+      allowedRoutes:
+        namespaces:
+          from: Same
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "app.fullname" . }}-dashboard
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ include "app.fullname" . }}
+  hostnames:
+    - {{ .Values.dashboard.hostname | quote }}
+  rules:
+    # Redirect HTTP to HTTPS
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      filters:
+        - type: RequestRedirect
+          requestRedirect:
+            scheme: https
+            statusCode: 301
+---
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: {{ include "app.fullname" . }}-dashboard-https
+  labels:
+    {{- include "app.labels" . | nindent 4 }}
+spec:
+  parentRefs:
+    - name: {{ include "app.fullname" . }}
+      sectionName: https
+  hostnames:
+    - {{ .Values.dashboard.hostname | quote }}
+  rules:
+    # API routes
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /api
+      backendRefs:
+        - name: {{ include "app.fullname" . }}-api
+          port: {{ .Values.api.service.port }}
+    # Dashboard routes
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: {{ include "app.fullname" . }}-dashboard
+          port: {{ .Values.dashboard.service.port }}
+{{- end }}
