@@ -1,0 +1,70 @@
+{
+  "name": "{{APP_NAME}}",
+  "version": "1.0.0",
+  "displayName": "{{APP_TITLE}}",
+  "description": "{{APP_TITLE}} - Discord Bot with multi-service architecture",
+  "private": true,
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/{{GITHUB_ORG}}/{{APP_NAME}}.git"
+  },
+  "scripts": {
+    "start": "node load-env.js",
+    "dev": "nodemon load-env.js",
+    "watch": "nodemon load-env.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "prepare": "husky",
+    "release": "semantic-release",
+    "prisma:generate": "npx prisma generate --schema=./commons/prisma/schema.prisma",
+    "prisma:migrate": "npx prisma migrate dev --schema=./commons/prisma/schema.prisma",
+    "prisma:migrate:deploy": "npx prisma migrate deploy --schema=./commons/prisma/schema.prisma",
+    "prisma:seed": "npx prisma db seed --schema=./commons/prisma/schema.prisma",
+    "prisma:studio": "npx prisma studio --schema=./commons/prisma/schema.prisma",
+    "docker:build": "docker buildx bake",
+    "docker:build:local": "docker buildx bake app-local"
+  },
+  "dependencies": {
+    "@{{APP_NAME}}/commons": "file:commons",
+    "cors": "^2.8.5",
+    "discord.js": "^14.16.3",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/exec": "^6.0.3",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^10.0.1",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "eslint": "^9.34.0",
+    "husky": "^9.1.7",
+    "lerna": "^8.2.2",
+    "lint-staged": "^16.1.5",
+    "nodemon": "^3.1.9",
+    "prettier": "^3.6.2",
+    "semantic-release": "^24.2.7",
+    "semantic-release-helm3": "^2.10.0",
+    "vitest": "^3.0.0"
+  },
+  "engines": {
+    "node": ">=20.11.1",
+    "npm": ">=10.5.0"
+  },
+  "prettier": {
+    "printWidth": 120,
+    "singleQuote": true,
+    "trailingComma": "es5"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": ["eslint --fix", "prettier --write"],
+    "*.{json,md,yaml,yml}": ["prettier --write"]
+  }
+}
