@@ -1,0 +1,41 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: {{APP_NAME}}
+  namespace: {{APP_NAME}}-staging
+spec:
+  interval: 30m
+  timeout: 10m
+  chart:
+    spec:
+      chart: {{APP_NAME}}
+      sourceRef:
+        kind: OCIRepository
+        name: {{APP_NAME}}
+        namespace: {{APP_NAME}}-staging
+      interval: 10m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  valuesFrom:
+    - kind: ConfigMap
+      name: {{APP_NAME}}-values-base
+      valuesKey: values.yaml
+    - kind: ConfigMap
+      name: {{APP_NAME}}-values-staging
+      valuesKey: values.yaml
+  values:
+    bot:
+      image:
+        tag: "${IMAGE_TAG}"
+    api:
+      image:
+        tag: "${IMAGE_TAG}"
+    dashboard:
+      image:
+        tag: "${IMAGE_TAG}"

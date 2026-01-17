@@ -1,0 +1,11 @@
+apiVersion: source.toolkit.fluxcd.io/v1beta2
+kind: OCIRepository
+metadata:
+  name: {{APP_NAME}}
+  namespace: {{K8S_NAMESPACE}}
+spec:
+  interval: 10m
+  url: oci://{{DOCKER_REGISTRY}}/{{APP_NAME}}-chart
+  ref:
+    semver: "*"
+  provider: gcp

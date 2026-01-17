@@ -1,0 +1,43 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: {{APP_NAME}}
+  namespace: {{APP_NAME}}-dev
+spec:
+  interval: 30m
+  timeout: 10m
+  chart:
+    spec:
+      chart: {{APP_NAME}}
+      sourceRef:
+        kind: OCIRepository
+        name: {{APP_NAME}}
+        namespace: {{APP_NAME}}-dev
+      interval: 10m
+  install:
+    remediation:
+      retries: 3
+  upgrade:
+    remediation:
+      retries: 3
+      remediateLastFailure: true
+    cleanupOnFail: true
+  # Values files merged in order
+  valuesFrom:
+    - kind: ConfigMap
+      name: {{APP_NAME}}-values-base
+      valuesKey: values.yaml
+    - kind: ConfigMap
+      name: {{APP_NAME}}-values-dev
+      valuesKey: values.yaml
+  # Inline value overrides
+  values:
+    bot:
+      image:
+        tag: "${IMAGE_TAG:=latest}"
+    api:
+      image:
+        tag: "${IMAGE_TAG:=latest}"
+    dashboard:
+      image:
+        tag: "${IMAGE_TAG:=latest}"

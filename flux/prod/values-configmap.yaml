@@ -1,0 +1,87 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{APP_NAME}}-values-base
+  namespace: {{APP_NAME}}
+data:
+  values.yaml: |
+    appName: "{{APP_NAME}}"
+    logLevel: info
+    
+    discord:
+      clientId: "{{DISCORD_CLIENT_ID}}"
+    
+    serviceAccount:
+      create: true
+      annotations:
+        iam.gke.io/gcp-service-account: "{{APP_NAME}}@{{GCP_PROJECT}}.iam.gserviceaccount.com"
+    
+    secrets:
+      gsm:
+        enabled: true
+        projectId: "{{GCP_PROJECT}}"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {{APP_NAME}}-values-prod
+  namespace: {{APP_NAME}}
+data:
+  values.yaml: |
+    environment: production
+    logLevel: info
+    
+    bot:
+      replicaCount: 2
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 5
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+      resources:
+        limits:
+          cpu: 1000m
+          memory: 1Gi
+        requests:
+          cpu: 200m
+          memory: 512Mi
+    
+    api:
+      replicaCount: 2
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 10
+      podDisruptionBudget:
+        enabled: true
+        minAvailable: 1
+    
+    dashboard:
+      replicaCount: 2
+      hostname: "{{DOMAIN}}"
+      url: "https://{{DOMAIN}}"
+      autoscaling:
+        enabled: true
+        minReplicas: 2
+        maxReplicas: 5
+    
+    gateway:
+      clusterIssuer: letsencrypt-production
+    
+    postgresql:
+      enabled: true
+      primary:
+        persistence:
+          size: 50Gi
+        resources:
+          limits:
+            cpu: 2000m
+            memory: 2Gi
+    
+    redis:
+      enabled: true
+      master:
+        persistence:
+          size: 5Gi
